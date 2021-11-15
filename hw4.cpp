@@ -5,6 +5,8 @@
 using namespace std;
 
 void sortArrays(string *, int *, int);
+void printArrays (string *, int *, int);
+float getAverageScore (int *, int);
 
 int main() {
     int arraySize;
@@ -66,16 +68,80 @@ int main() {
 
         *(ptrScore + i) = score;
     }
-
+    cout << "The test scores in ascending order, and their average, are:\n" << endl;
     sortArrays(ptrName, ptrScore, arraySize);
+    printArrays(ptrName, ptrScore, arraySize);
+    float average = getAverageScore(ptrScore, arraySize);
+    cout << "\nAverage score:   " << setprecision(2) << fixed << average << endl;
 
     // Use delete operator to de-allocate dynamic memory.
     delete[] ptrName;
     delete[] ptrScore;
 }
 
+// Function:     sortArrays
+// Purpose:      sorts the arrays for the student scores and student names so that both
+//               are sorted in order of ascending test score. For the score array, this
+//               means that the lowest score will be the first element in the array and
+//               the highest score will be the last element in the array. For the name
+//               array, this means that the name of the student with the lowest score
+//               will be the first element of the array, and the name of the student
+//               with the highest score will be the last element of the array.
+//               This function sorts the arrays using bubble sort.
+// Parameters:   ptrName -    a pointer to the first element in the array of student names
+//               ptrScore -   a pointer to the first element in the array of scores
+//               arraySize -  the size of the arrays. Both arrays have the same size.
 void sortArrays(string * ptrName, int * ptrScore, int arraySize) {
-    for (int i = 0; i < arraySize; i++) {
-        cout << *(ptrName + i) << ", " << *(ptrScore + i) << endl;
+    int i, j;
+    bool swapped;
+    for (i = 0; i < arraySize - 1; i++) {
+        swapped = false;
+        for (j = 0; j < arraySize - i - 1; j++) {
+
+            if ( *(ptrScore + j) > *(ptrScore + j + 1) ) {
+                swap(*(ptrScore + j), *(ptrScore + j + 1) );
+                swap(*(ptrName + j), *(ptrName + j + 1) );
+                swapped = true;
+            }
+        }
+        // Break if no two elements were swapped by inner loop.
+        if (swapped = false)
+            break;
     }
 }
+
+// NEED HELP WITH FORMATTING
+// Function:     printArrays
+// Purpose:      prints the arrays for the student scores and students names in the format
+//               given in the assignment specification.
+// Parameters:   ptrName -    a pointer to the first element in the array of student names
+//               ptrScore -   a pointer to the first element in the array of scores
+//               arraySize -  the size of the arrays. Both arrays have the same size.
+void printArrays(string * ptrName, int * ptrScore, int arraySize) {
+    cout << "Name" << setw(20) << "Score" << endl;
+    for (int i = 0; i < arraySize; i++) {
+        cout << *(ptrName + i) << setw(20) << *(ptrScore + i) << endl;
+    }
+}
+
+// Function:     getAverageScore
+// Purpose:      calculates and returns the average of the test scores entered by the user.
+// Parameters:   ptrScore -   a pointer to the first element in the array of scores
+//               arraySize -  the size of the array.
+// Returns:      the average score as a float
+float getAverageScore (int * ptrScore, int arraySize) {
+    // Iterate through the array to calculate the sum of the scores in the array.
+    int sum = 0;
+    for (int i = 0 ; i < arraySize; i++) {
+        sum += *(ptrScore + i);
+    }
+
+    // Cast the sum and the array size as floats and divide the sum by the size
+    // to calculate the average score.
+    float average = static_cast<float>(sum) / static_cast<float>(arraySize);
+    return average;
+}
+
+
+
+
